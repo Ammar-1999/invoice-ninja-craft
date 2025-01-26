@@ -7,6 +7,8 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Plus, X } from "lucide-react";
 import { InvoiceData } from "../BillingForm";
 
 const mockGroups = [
@@ -42,17 +44,34 @@ export const ProductSelection = ({
   formData,
   setFormData,
 }: ProductSelectionProps) => {
-  const handleProductChange = (productId: string, quantity: number) => {
-    setFormData((prev) => {
-      const existingProducts = prev.products.filter((p) => p.id !== productId);
-      return {
-        ...prev,
-        products:
-          quantity > 0
-            ? [...existingProducts, { id: productId, quantity }]
-            : existingProducts,
-      };
-    });
+  const handleAddProduct = (productId: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      products: [...prev.products, { id: productId, quantity: 1 }],
+    }));
+  };
+
+  const handleRemoveProduct = (productId: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      products: prev.products.filter((p) => p.id !== productId),
+    }));
+  };
+
+  const handleQuantityChange = (productId: string, quantity: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      products: prev.products.map((p) =>
+        p.id === productId ? { ...p, quantity } : p
+      ),
+    }));
+  };
+
+  const getProductDetails = (productId: string) => {
+    if (!formData.group) return null;
+    return mockProducts[formData.group as keyof typeof mockProducts].find(
+      (p) => p.id === productId
+    );
   };
 
   return (
@@ -83,36 +102,64 @@ export const ProductSelection = ({
 
         {formData.group && (
           <div className="space-y-4">
-            <Label>Products</Label>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {mockProducts[formData.group as keyof typeof mockProducts].map(
-                (product) => (
+            <div className="space-y-2">
+              <Label>Add Product</Label>
+              <Select onValueChange={handleAddProduct}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a product" />
+                </SelectTrigger>
+                <SelectContent>
+                  {mockProducts[formData.group as keyof typeof mockProducts]
+                    .filter(
+                      (product) =>
+                        !formData.products.some((p) => p.id === product.id)
+                    )
+                    .map((product) => (
+                      <SelectItem key={product.id} value={product.id}>
+                        {product.name} - ${product.price}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-4">
+              {formData.products.map((product) => {
+                const details = getProductDetails(product.id);
+                if (!details) return null;
+
+                return (
                   <div
                     key={product.id}
                     className="flex items-center space-x-4 p-4 border rounded-lg"
                   >
                     <div className="flex-1">
-                      <p className="font-medium">{product.name}</p>
+                      <p className="font-medium">{details.name}</p>
                       <p className="text-sm text-gray-500">
-                        ${product.price.toFixed(2)}
+                        ${details.price.toFixed(2)}
                       </p>
                     </div>
                     <Input
                       type="number"
-                      min="0"
+                      min="1"
                       className="w-24"
-                      value={
-                        formData.products.find((p) => p.id === product.id)
-                          ?.quantity || ""
-                      }
+                      value={product.quantity}
                       onChange={(e) =>
-                        handleProductChange(product.id, parseInt(e.target.value))
+                        handleQuantityChange(product.id, parseInt(e.target.value))
                       }
                       placeholder="Qty"
                     />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleRemoveProduct(product.id)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
                   </div>
-                )
-              )}
+                );
+              })}
             </div>
           </div>
         )}

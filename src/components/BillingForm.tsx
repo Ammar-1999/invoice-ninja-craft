@@ -17,8 +17,9 @@ export type InvoiceData = {
   paymentMethod: string;
   paidAmount: number;
   dueDate?: Date;
-  installmentType?: string;
+  installmentType?: "recurring" | "custom";
   startDate?: Date;
+  endDate?: Date;
   interval?: number;
   intervalType?: string;
   installmentAmount?: number;

@@ -18,6 +18,7 @@ import {
 import { CalendarIcon, Plus, X } from "lucide-react";
 import { format } from "date-fns";
 import { InvoiceData } from "../BillingForm";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface PaymentSectionProps {
   formData: InvoiceData;
@@ -156,27 +157,24 @@ export const PaymentSection = ({ formData, setFormData }: PaymentSectionProps) =
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Installment Type</Label>
-            <Select
-              value={formData.installmentType}
+            <ToggleGroup
+              type="single"
+              value={formData.installmentType || "recurring"}
               onValueChange={(value) =>
                 setFormData((prev) => ({
                   ...prev,
-                  installmentType: value,
+                  installmentType: value as "recurring" | "custom",
                   customInstallments: undefined,
                 }))
               }
+              className="justify-start"
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Select installment type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="recurring">Recurring</SelectItem>
-                <SelectItem value="custom">Custom</SelectItem>
-              </SelectContent>
-            </Select>
+              <ToggleGroupItem value="recurring">Recurring</ToggleGroupItem>
+              <ToggleGroupItem value="custom">Custom</ToggleGroupItem>
+            </ToggleGroup>
           </div>
 
-          {formData.installmentType === "recurring" && (
+          {(formData.installmentType || "recurring") === "recurring" && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Start Date</Label>
@@ -200,6 +198,36 @@ export const PaymentSection = ({ formData, setFormData }: PaymentSectionProps) =
                         setFormData((prev) => ({
                           ...prev,
                           startDate: date || undefined,
+                        }))
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              <div className="space-y-2">
+                <Label>End Date</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start text-left font-normal"
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {formData.endDate
+                        ? format(formData.endDate, "PPP")
+                        : "Pick a date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={formData.endDate}
+                      onSelect={(date) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          endDate: date || undefined,
                         }))
                       }
                       initialFocus
