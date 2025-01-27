@@ -62,11 +62,11 @@ export const PaymentSection = ({ formData, setFormData }: PaymentSectionProps) =
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-semibold">Payment Details</h2>
+      <h2 className="text-xl font-semibold">تفاصيل الدفع</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <Label htmlFor="currency">Currency</Label>
+          <Label htmlFor="currency">العملة</Label>
           <Select
             value={formData.currency}
             onValueChange={(value) =>
@@ -74,18 +74,18 @@ export const PaymentSection = ({ formData, setFormData }: PaymentSectionProps) =
             }
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select currency" />
+              <SelectValue placeholder="اختر العملة" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="USD">USD</SelectItem>
-              <SelectItem value="EUR">EUR</SelectItem>
-              <SelectItem value="GBP">GBP</SelectItem>
+              <SelectItem value="USD">دولار أمريكي</SelectItem>
+              <SelectItem value="EUR">يورو</SelectItem>
+              <SelectItem value="SAR">ريال سعودي</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="paymentMethod">Payment Method</Label>
+          <Label htmlFor="paymentMethod">طريقة الدفع</Label>
           <Select
             value={formData.paymentMethod}
             onValueChange={(value) =>
@@ -98,18 +98,18 @@ export const PaymentSection = ({ formData, setFormData }: PaymentSectionProps) =
             }
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select payment method" />
+              <SelectValue placeholder="اختر طريقة الدفع" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="cash">Cash</SelectItem>
-              <SelectItem value="deferred">Deferred</SelectItem>
-              <SelectItem value="installments">Installments</SelectItem>
+              <SelectItem value="cash">نقدي</SelectItem>
+              <SelectItem value="deferred">آجل</SelectItem>
+              <SelectItem value="installments">أقساط</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="paidAmount">Paid Amount</Label>
+          <Label htmlFor="paidAmount">المبلغ المدفوع</Label>
           <Input
             type="number"
             value={formData.paidAmount}
@@ -125,17 +125,17 @@ export const PaymentSection = ({ formData, setFormData }: PaymentSectionProps) =
 
         {formData.paymentMethod === "deferred" && (
           <div className="space-y-2">
-            <Label>Due Date</Label>
+            <Label>تاريخ الاستحقاق</Label>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  className="w-full justify-start text-left font-normal"
+                  className="w-full justify-start text-right font-normal"
                 >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  <CalendarIcon className="ml-2 h-4 w-4" />
                   {formData.dueDate
                     ? format(formData.dueDate, "PPP")
-                    : "Pick a date"}
+                    : "اختر التاريخ"}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
@@ -156,9 +156,10 @@ export const PaymentSection = ({ formData, setFormData }: PaymentSectionProps) =
       {formData.paymentMethod === "installments" && (
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label>Installment Type</Label>
+            <Label>نوع التقسيط</Label>
             <ToggleGroup
               type="single"
+              defaultValue="recurring"
               value={formData.installmentType || "recurring"}
               onValueChange={(value) =>
                 setFormData((prev) => ({
@@ -169,25 +170,25 @@ export const PaymentSection = ({ formData, setFormData }: PaymentSectionProps) =
               }
               className="justify-start"
             >
-              <ToggleGroupItem value="recurring">Recurring</ToggleGroupItem>
-              <ToggleGroupItem value="custom">Custom</ToggleGroupItem>
+              <ToggleGroupItem value="recurring">دوري</ToggleGroupItem>
+              <ToggleGroupItem value="custom">مخصص</ToggleGroupItem>
             </ToggleGroup>
           </div>
 
           {(formData.installmentType || "recurring") === "recurring" && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Start Date</Label>
+                <Label>تاريخ البداية</Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
-                      className="w-full justify-start text-left font-normal"
+                      className="w-full justify-start text-right font-normal"
                     >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      <CalendarIcon className="ml-2 h-4 w-4" />
                       {formData.startDate
                         ? format(formData.startDate, "PPP")
-                        : "Pick a date"}
+                        : "اختر التاريخ"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0">
@@ -207,17 +208,17 @@ export const PaymentSection = ({ formData, setFormData }: PaymentSectionProps) =
               </div>
 
               <div className="space-y-2">
-                <Label>End Date</Label>
+                <Label>تاريخ النهاية</Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
-                      className="w-full justify-start text-left font-normal"
+                      className="w-full justify-start text-right font-normal"
                     >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      <CalendarIcon className="ml-2 h-4 w-4" />
                       {formData.endDate
                         ? format(formData.endDate, "PPP")
-                        : "Pick a date"}
+                        : "اختر التاريخ"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0">
@@ -237,7 +238,7 @@ export const PaymentSection = ({ formData, setFormData }: PaymentSectionProps) =
               </div>
 
               <div className="space-y-2">
-                <Label>Interval</Label>
+                <Label>الفترة</Label>
                 <div className="flex space-x-2">
                   <Input
                     type="number"
@@ -258,19 +259,19 @@ export const PaymentSection = ({ formData, setFormData }: PaymentSectionProps) =
                     }
                   >
                     <SelectTrigger className="w-[120px]">
-                      <SelectValue placeholder="Type" />
+                      <SelectValue placeholder="النوع" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="days">Days</SelectItem>
-                      <SelectItem value="months">Months</SelectItem>
-                      <SelectItem value="years">Years</SelectItem>
+                      <SelectItem value="days">أيام</SelectItem>
+                      <SelectItem value="months">شهور</SelectItem>
+                      <SelectItem value="years">سنوات</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label>Installment Amount</Label>
+                <Label>قيمة القسط</Label>
                 <Input
                   type="number"
                   value={formData.installmentAmount}
@@ -294,22 +295,22 @@ export const PaymentSection = ({ formData, setFormData }: PaymentSectionProps) =
                 onClick={handleAddCustomInstallment}
                 className="w-full"
               >
-                <Plus className="mr-2 h-4 w-4" />
-                Add Installment
+                <Plus className="ml-2 h-4 w-4" />
+                إضافة قسط
               </Button>
 
               {formData.customInstallments?.map((installment, index) => (
                 <div key={index} className="flex items-center space-x-4">
                   <div className="flex-1 grid grid-cols-2 gap-4">
                     <div>
-                      <Label>Date</Label>
+                      <Label>التاريخ</Label>
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
-                            className="w-full justify-start text-left font-normal"
+                            className="w-full justify-start text-right font-normal"
                           >
-                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            <CalendarIcon className="ml-2 h-4 w-4" />
                             {format(installment.date, "PPP")}
                           </Button>
                         </PopoverTrigger>
@@ -330,7 +331,7 @@ export const PaymentSection = ({ formData, setFormData }: PaymentSectionProps) =
                       </Popover>
                     </div>
                     <div>
-                      <Label>Amount</Label>
+                      <Label>المبلغ</Label>
                       <Input
                         type="number"
                         value={installment.amount}

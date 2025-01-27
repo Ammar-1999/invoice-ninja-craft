@@ -12,26 +12,26 @@ import { Plus, X } from "lucide-react";
 import { InvoiceData } from "../BillingForm";
 
 const mockGroups = [
-  { id: "1", name: "Electronics" },
-  { id: "2", name: "Office Supplies" },
-  { id: "3", name: "Software" },
+  { id: "1", name: "إلكترونيات" },
+  { id: "2", name: "مستلزمات مكتبية" },
+  { id: "3", name: "برمجيات" },
 ];
 
 const mockProducts = {
   "1": [
-    { id: "e1", name: "Laptop", price: 999.99 },
-    { id: "e2", name: "Monitor", price: 299.99 },
-    { id: "e3", name: "Keyboard", price: 79.99 },
+    { id: "e1", name: "لابتوب", price: 999.99 },
+    { id: "e2", name: "شاشة", price: 299.99 },
+    { id: "e3", name: "لوحة مفاتيح", price: 79.99 },
   ],
   "2": [
-    { id: "o1", name: "Paper", price: 9.99 },
-    { id: "o2", name: "Pens", price: 4.99 },
-    { id: "o3", name: "Stapler", price: 7.99 },
+    { id: "o1", name: "ورق", price: 9.99 },
+    { id: "o2", name: "أقلام", price: 4.99 },
+    { id: "o3", name: "دباسة", price: 7.99 },
   ],
   "3": [
-    { id: "s1", name: "Office 365", price: 99.99 },
-    { id: "s2", name: "Antivirus", price: 49.99 },
-    { id: "s3", name: "Design Suite", price: 599.99 },
+    { id: "s1", name: "أوفيس 365", price: 99.99 },
+    { id: "s2", name: "مضاد فيروسات", price: 49.99 },
+    { id: "s3", name: "برنامج تصميم", price: 599.99 },
   ],
 };
 
@@ -76,11 +76,11 @@ export const ProductSelection = ({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-semibold">Products</h2>
+      <h2 className="text-xl font-semibold">المنتجات</h2>
 
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="group">Product Group</Label>
+          <Label htmlFor="group">مجموعة المنتجات</Label>
           <Select
             value={formData.group}
             onValueChange={(value) =>
@@ -88,7 +88,7 @@ export const ProductSelection = ({
             }
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select a group" />
+              <SelectValue placeholder="اختر مجموعة" />
             </SelectTrigger>
             <SelectContent>
               {mockGroups.map((group) => (
@@ -103,10 +103,10 @@ export const ProductSelection = ({
         {formData.group && (
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label>Add Product</Label>
+              <Label>إضافة منتج</Label>
               <Select onValueChange={handleAddProduct}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select a product" />
+                  <SelectValue placeholder="اختر منتج" />
                 </SelectTrigger>
                 <SelectContent>
                   {mockProducts[formData.group as keyof typeof mockProducts]
@@ -147,7 +147,7 @@ export const ProductSelection = ({
                       onChange={(e) =>
                         handleQuantityChange(product.id, parseInt(e.target.value))
                       }
-                      placeholder="Qty"
+                      placeholder="الكمية"
                     />
                     <Button
                       type="button"

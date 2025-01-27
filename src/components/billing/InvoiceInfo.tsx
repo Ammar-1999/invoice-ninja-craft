@@ -21,9 +21,9 @@ import { format } from "date-fns";
 import { InvoiceData } from "../BillingForm";
 
 const mockClients = [
-  { id: "1", name: "Acme Corp" },
-  { id: "2", name: "Wayne Enterprises" },
-  { id: "3", name: "Stark Industries" },
+  { id: "1", name: "شركة أكمي" },
+  { id: "2", name: "مؤسسة واين" },
+  { id: "3", name: "صناعات ستارك" },
 ];
 
 interface InvoiceInfoProps {
@@ -34,11 +34,11 @@ interface InvoiceInfoProps {
 export const InvoiceInfo = ({ formData, setFormData }: InvoiceInfoProps) => {
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-semibold">Invoice Information</h2>
+      <h2 className="text-xl font-semibold">معلومات الفاتورة</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <Label htmlFor="client">Client</Label>
+          <Label htmlFor="client">العميل</Label>
           <Select
             value={formData.client}
             onValueChange={(value) =>
@@ -46,7 +46,7 @@ export const InvoiceInfo = ({ formData, setFormData }: InvoiceInfoProps) => {
             }
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select a client" />
+              <SelectValue placeholder="اختر العميل" />
             </SelectTrigger>
             <SelectContent>
               {mockClients.map((client) => (
@@ -59,7 +59,7 @@ export const InvoiceInfo = ({ formData, setFormData }: InvoiceInfoProps) => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="type">Invoice Type</Label>
+          <Label htmlFor="type">نوع الفاتورة</Label>
           <Select
             value={formData.type}
             onValueChange={(value) =>
@@ -67,27 +67,27 @@ export const InvoiceInfo = ({ formData, setFormData }: InvoiceInfoProps) => {
             }
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select type" />
+              <SelectValue placeholder="اختر النوع" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="draft">Draft</SelectItem>
-              <SelectItem value="confirmed">Confirmed</SelectItem>
-              <SelectItem value="paid">Paid</SelectItem>
-              <SelectItem value="canceled">Canceled</SelectItem>
+              <SelectItem value="draft">مسودة</SelectItem>
+              <SelectItem value="confirmed">مؤكدة</SelectItem>
+              <SelectItem value="paid">مدفوعة</SelectItem>
+              <SelectItem value="canceled">ملغاة</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="space-y-2">
-          <Label>Invoice Date</Label>
+          <Label>تاريخ الفاتورة</Label>
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="w-full justify-start text-left font-normal"
+                className="w-full justify-start text-right font-normal"
               >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {formData.date ? format(formData.date, "PPP") : "Pick a date"}
+                <CalendarIcon className="ml-2 h-4 w-4" />
+                {formData.date ? format(formData.date, "PPP") : "اختر التاريخ"}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
@@ -104,7 +104,7 @@ export const InvoiceInfo = ({ formData, setFormData }: InvoiceInfoProps) => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="number">Invoice Number</Label>
+          <Label htmlFor="number">رقم الفاتورة</Label>
           <Input
             id="number"
             value={formData.number}
@@ -117,14 +117,14 @@ export const InvoiceInfo = ({ formData, setFormData }: InvoiceInfoProps) => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="notes">Notes</Label>
+        <Label htmlFor="notes">ملاحظات</Label>
         <Textarea
           id="notes"
           value={formData.notes}
           onChange={(e) =>
             setFormData((prev) => ({ ...prev, notes: e.target.value }))
           }
-          placeholder="Additional notes..."
+          placeholder="ملاحظات إضافية..."
           className="h-24"
         />
       </div>

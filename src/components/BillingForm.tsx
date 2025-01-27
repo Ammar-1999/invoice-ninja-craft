@@ -44,8 +44,8 @@ export const BillingForm = () => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     toast({
-      title: "Success",
-      description: "Invoice created successfully",
+      title: "تم بنجاح",
+      description: "تم إنشاء الفاتورة بنجاح",
     });
   };
 
@@ -57,10 +57,10 @@ export const BillingForm = () => {
       
       <div className="flex justify-end space-x-4">
         <Button variant="outline" type="button">
-          Save as Draft
+          حفظ كمسودة
         </Button>
         <Button type="submit">
-          Create Invoice
+          إنشاء الفاتورة
         </Button>
       </div>
     </form>
