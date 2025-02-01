@@ -5,6 +5,16 @@ import { PaymentSection } from "./billing/PaymentSection";
 import { Button } from "./ui/button";
 import { toast } from "./ui/use-toast";
 
+export type ProductDeliveryStatus = "delivered" | "pending";
+
+export type ProductWithDelivery = {
+  id: string;
+  quantity: number;
+  deliveryDate?: Date;
+  status?: ProductDeliveryStatus;
+  notes?: string;
+};
+
 export type InvoiceData = {
   client: string;
   type: string;
@@ -12,7 +22,7 @@ export type InvoiceData = {
   number: string;
   notes: string;
   group: string;
-  products: Array<{ id: string; quantity: number }>;
+  products: ProductWithDelivery[];
   currency: string;
   paymentMethod: string;
   paidAmount: number;
@@ -24,6 +34,8 @@ export type InvoiceData = {
   intervalType?: string;
   installmentAmount?: number;
   customInstallments?: Array<{ date: Date; amount: number }>;
+  deliveryMethod: "immediate" | "scheduled";
+  singleDeliveryDate?: Date;
 };
 
 export const BillingForm = () => {
@@ -38,6 +50,7 @@ export const BillingForm = () => {
     currency: "USD",
     paymentMethod: "cash",
     paidAmount: 0,
+    deliveryMethod: "immediate",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
