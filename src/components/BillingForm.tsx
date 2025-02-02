@@ -10,6 +10,7 @@ export type ProductDeliveryStatus = "delivered" | "pending";
 export type ProductWithDelivery = {
   id: string;
   quantity: number;
+  price: number;
   deliveryDate?: Date;
   status?: ProductDeliveryStatus;
   notes?: string;
@@ -53,6 +54,13 @@ export const BillingForm = () => {
     deliveryMethod: "immediate",
   });
 
+  const totalAmount = formData.products.reduce(
+    (sum, product) => sum + product.price * product.quantity,
+    0
+  );
+
+  const remainingAmount = totalAmount - formData.paidAmount;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
@@ -68,6 +76,14 @@ export const BillingForm = () => {
       <ProductSelection formData={formData} setFormData={setFormData} />
       <PaymentSection formData={formData} setFormData={setFormData} />
       
+      <div className="space-y-4 border-t pt-4">
+        <div className="grid grid-cols-3 gap-4 text-sm">
+          <div className="text-gray-600">إجمالي المبلغ: {totalAmount} {formData.currency}</div>
+          <div className="text-gray-600">المبلغ المدفوع: {formData.paidAmount} {formData.currency}</div>
+          <div className="text-gray-600">المبلغ المتبقي: {remainingAmount} {formData.currency}</div>
+        </div>
+      </div>
+
       <div className="flex justify-end space-x-4">
         <Button variant="outline" type="button">
           حفظ كمسودة

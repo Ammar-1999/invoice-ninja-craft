@@ -24,6 +24,7 @@ interface ProductItemProps {
   isScheduled: boolean;
   singleDeliveryDate?: Date;
   onQuantityChange: (productId: string, quantity: number) => void;
+  onPriceChange: (productId: string, price: number) => void;
   onRemove: (productId: string) => void;
   onDeliveryDateChange: (productId: string, date: Date) => void;
   onStatusChange: (productId: string, status: ProductDeliveryStatus) => void;
@@ -36,6 +37,7 @@ export const ProductItem = ({
   isScheduled,
   singleDeliveryDate,
   onQuantityChange,
+  onPriceChange,
   onRemove,
   onDeliveryDateChange,
   onStatusChange,
@@ -54,24 +56,41 @@ export const ProductItem = ({
           <p className="font-medium">{details.name}</p>
           <p className="text-sm text-gray-500">${details.price.toFixed(2)}</p>
         </div>
-        <Input
-          type="number"
-          min="1"
-          className="w-24 mx-4"
-          value={product.quantity}
-          onChange={(e) =>
-            onQuantityChange(product.id, parseInt(e.target.value))
-          }
-          placeholder="الكمية"
-        />
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          onClick={() => onRemove(product.id)}
-        >
-          <X className="h-4 w-4" />
-        </Button>
+        <div className="flex items-center gap-4">
+          <div className="w-32">
+            <Label>السعر</Label>
+            <Input
+              type="number"
+              min="0"
+              step="0.01"
+              value={product.price}
+              onChange={(e) =>
+                onPriceChange(product.id, parseFloat(e.target.value))
+              }
+              placeholder="السعر"
+            />
+          </div>
+          <div className="w-24">
+            <Label>الكمية</Label>
+            <Input
+              type="number"
+              min="1"
+              value={product.quantity}
+              onChange={(e) =>
+                onQuantityChange(product.id, parseInt(e.target.value))
+              }
+              placeholder="الكمية"
+            />
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={() => onRemove(product.id)}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
       {isScheduled && !singleDeliveryDate && (

@@ -20,6 +20,7 @@ export const ProductSelection = ({
         {
           id: productId,
           quantity: 1,
+          price: 0,
           status: formData.deliveryMethod === "scheduled" ? "pending" : undefined,
         },
       ],
@@ -38,6 +39,15 @@ export const ProductSelection = ({
       ...prev,
       products: prev.products.map((p) =>
         p.id === productId ? { ...p, quantity } : p
+      ),
+    }));
+  };
+
+  const handlePriceChange = (productId: string, price: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      products: prev.products.map((p) =>
+        p.id === productId ? { ...p, price } : p
       ),
     }));
   };
@@ -91,6 +101,7 @@ export const ProductSelection = ({
               isScheduled={formData.deliveryMethod === "scheduled"}
               singleDeliveryDate={formData.singleDeliveryDate}
               onQuantityChange={handleQuantityChange}
+              onPriceChange={handlePriceChange}
               onRemove={handleRemoveProduct}
               onDeliveryDateChange={handleDeliveryDateChange}
               onStatusChange={handleStatusChange}
